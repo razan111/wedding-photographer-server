@@ -21,6 +21,16 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run(){
     try{
         const serviceCollection = client.db('weddingPhotographer').collection('services')
+
+        app.get('/services', async(req, res) =>{
+            const page = parseInt(req.query.page);
+            const size = parseInt(req.query.size);
+            const query = {}
+            const cursor = serviceCollection.find(query)
+            const services = await cursor.skip(page*size).limit(size).toArray()
+            const count = await serviceCollection.estimatedDocumentCount();
+            res.send({count, services})
+        })
     }
     finally{
 
