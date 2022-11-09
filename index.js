@@ -31,6 +31,16 @@ async function run(){
             const count = await serviceCollection.estimatedDocumentCount();
             res.send({count, services})
         })
+
+
+        app.post('/services', async(req, res) =>{
+            const service =  req.body
+            console.log(service)
+            const result = await serviceCollection.insertOne(service)
+            res.send(result)
+        })
+
+
     }
     finally{
 
